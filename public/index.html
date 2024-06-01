@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title id="web_title"></title>
+		<link id="web_icon" rel="shortcut icon" type="image/x-icon" />
+		<link rel="stylesheet" href="./element/elementUI.css">
+		<link rel="stylesheet" href="./css/index.css">
+		<link rel="stylesheet" href="./css/sweetalert.css">
+		<script src="./js/sweetalert.js"></script>
+		<script src="element/vue.js"></script>
+		<script src="element/element.js"></script>
+		<script src="./js/jquery.js"></script>
+		<!-- <script src="./js/index.js"></script> -->
+		<style>
+			.el-carousel__indicator.is-active button {
+				display: none;
+			}
+
+			.el-carousel__indicators--outside {
+				display: none;
+			}
+
+			.el-carousel__container {
+				margin-top: 30px;
+			}
+
+			.el-menu.el-menu--horizontal {
+				border: none;
+			}
+
+			.el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+				border: none;
+			}
+
+			.el-dropdown-menu__item--divided:before,
+			.el-menu,
+			.el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+			.el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+			.el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+				background-color: #F2231F;
+			}
+
+			.el-menu--horizontal>.el-submenu.is-active .el-submenu__title,
+			.el-menu--horizontal>.el-submenu .el-submenu__title {
+				color: #f1d1aa;
+			}
+
+			.el-menu--horizontal>.el-submenu:focus .el-submenu__title,
+			.el-menu--horizontal>.el-submenu:hover .el-submenu__title {
+				color: #f1d1aa;
+			}
+
+			.el-message-box__wrapper {
+				z-index: 999999 !important;
+			}
+
+			.el-menu--horizontal>.el-submenu .el-submenu__title {
+				height: 30px;
+				line-height: 30px;
+				border-bottom: 2px solid transparent;
+				color: #909399;
+			}
+
+			.el-message-box {
+				width: 320px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div class="head">
+				<div class="title">FitForge</div>
+				<div>
+					<img src="static/user.png" />
+				</div>
+			</div>
+			<div class="main">
+				<img class="cricle" src="static/cricle.png" />
+				<div class="title">Fitness is a Journey,Not a Destination</div>
+				<div class="des">
+					<div>
+						You've checked in {{count}}
+					</div>
+					<div>
+						times this month !!
+					</div>
+				</div>
+				<div style="margin-top: 30px;">
+					<span class="check" @click="addCount">check-in</span>
+				</div>
+			</div>
+			<div class="main_white">
+			</div>
+			<div class="main">
+				<div class="title" style="padding-top: 20px;">Today's Plan !!!</div>
+				<div class="userbox">
+					<div v-if="param">
+						<div class="title" style="padding-top: 20px;">Hi! {{param.name}}</div>
+						<div class="formItem">
+							<div class="lable">Goal Setting:</div>
+							<div class="input">
+								<input disabled v-model="param.answerList[2].value" />
+							</div>
+						</div>
+						<div class="formItem">
+							<div class="lable">Difficulty Levels:</div>
+							<div class="input">
+								<input disabled v-model="param.answerList[4].value" />
+							</div>
+						</div>
+						<div class="formItem">
+							<div class="lable">Category by Goals:</div>
+							<div class="input">
+								<input disabled v-model="param.answerList[1].value" />
+							</div>
+						</div>
+						<div class="formItem">
+							<div class="lable">Training duration:</div>
+							<div class="input">
+								<input disabled v-model="param.answerList[3].value" />
+							</div>
+						</div>
+						<div class="formItem">
+							<div class="lable">DATE:</div>
+							<div class="input">
+								<input disabled v-model="param.startDate" />
+							</div>
+						</div>
+						<img class="del" @click="delById(param)" src="static/del.png" />
+
+					</div>
+					<div v-if="!param" class="planDes">
+						Oops! lt looks like your workout plan ison a coffee break.Let's fill it up withsome
+						sweat-worthy sessions and get
+						youmoving towards yourgoals!
+					</div>
+				</div>
+			</div>
+			<div class="sourcebox">
+				<div class="title" style="padding-top: 20px;margin-left: 15px;">Course</div>
+				<div class="planDes" v-if="!paramList">
+					Time to sculptthat masterpiece ! Your workoutcanvas is waitingfor you.Let's
+					sketch out a planthat'll paint astronger, fitteryou!!!
+				</div>
+				<div class="sourceItem" v-if="paramList" v-for="item in paramList" @click="itemClick(item)">
+					<img :src="item.profile==0?'static/p2.png':'static/p3.png'" class="person" />
+					<div class="content">
+						<div class="title">{{item.name}}</div>
+						<div class="text">{{item.num}} Cal</div>
+					</div>
+					<div class="heartBox">
+						<img class="heart" src="static/heart.png" />
+						<div class="bpm">
+							{{item.bpmNum}}bpm
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="startBox">
+				<img src="static/p1.png" class="p1" />
+				<div style="margin-top: 30px;">
+					<span class="check" @click="toUrl('./name.html')">START YOUR PLAN!</span>
+				</div>
+			</div>
+			<div style="height: 80px;"></div>
+		</div>
+		<script>
+			var userAgent = navigator.userAgent.toLowerCase();
+			if (!userAgent.match(/(iphone|ipod|ipad|android|mobile)/)) {
+				// PC
+				window.location.href = "./pc/index.html"
+			}
+			var that;
+			var app = new Vue({
+				el: '#container',
+				data() {
+					return {
+						count: 17,
+						param: null,
+						paramList: null
+					}
+				},
+				created() {
+
+				},
+				mounted() {
+					var paramList = window.localStorage.getItem('paramList');
+					if (paramList) {
+						this.paramList = JSON.parse(paramList);
+					}
+					var dayCount = window.localStorage.getItem('dayCount');
+					if (dayCount) {
+						this.count = dayCount;
+					}
+				},
+				methods: {
+					delById(obj) {
+						this.param = null;
+						this.paramList.forEach((e, i) => {
+							if (e.id == obj.id) {
+								this.paramList.splice(i, 1)
+							}
+						})
+						window.localStorage.setItem("paramList", JSON.stringify(this.paramList))
+					},
+					addCount() {
+						this.count++;
+						window.localStorage.setItem('dayCount', this.count);
+					},
+					itemClick(item) {
+						this.param = item;
+						this.param.answerList.forEach(e => {
+							e.value = ''
+							e.children.forEach(el => {
+								if (el.check) {
+									e.value = el.name;
+								}
+							})
+						})
+					},
+					toUrl(url) {
+						window.location.href = url
+					},
+				}
+			})
+		</script>
+	</body>
+</html>

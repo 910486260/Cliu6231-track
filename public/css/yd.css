@@ -1,0 +1,95 @@
+html {
+	font-size: 10px;
+
+}
+a {
+	text-decoration: none;
+}
+
+#container {
+	max-width: 844px;
+	margin: 0 auto;
+}
+
+.titleBox {
+	margin-top: 0.9rem;
+	width: 100%;
+	text-align: center;
+	font-family: MicrosoftYaHei-Bold;
+	font-size: 2.5rem;
+	font-weight: normal;
+	font-stretch: normal;
+	letter-spacing: -1px;
+	color: #163eac;
+	font-weight: bold;
+	position: relative;
+}
+
+.tabItem {
+	width: 24%;
+	height: 2rem;
+	line-height: 2rem;
+	background-color: #163eab;
+	border-radius: 13px;
+	font-family: MicrosoftYaHei-Bold;
+	font-size: 1rem;
+	font-weight: normal;
+	text-align: center;
+	color: #fff;
+	font-weight: 700;
+	margin-top: 0.8rem;
+}
+
+.txt1 {
+	width: 88%;
+	margin: 0 auto;
+	text-indent: 2.5rem;
+	font-family: MicrosoftYaHei;
+	font-size: 1.2rem;
+	color: #6c6c6c;
+	text-align: justify;
+}
+
+.imgTitle {
+	width: 100%;
+	text-align: center;
+	font-family: MicrosoftYaHei-Bold;
+	font-size: 1.5rem;
+	font-weight: normal;
+	font-stretch: normal;
+	font-weight: bold;
+	color: #163eac;
+	margin-top: 1.5rem;
+	position: relative;
+}
+
+.el-carousel__container {
+	height: 16rem !important;
+}
+
+.el-carousel__indicator--horizontal {
+	display: none;
+}
+
+.el-carousel__item--card.is-in-stage {
+	border-radius: 10px;
+}
+
+.el-carousel__item--card {
+	width: 90%;
+
+}
+
+.el-carousel__item,
+.el-carousel__mask {
+	left: -22%;
+	height: 90%;
+}
+
+.el-carousel__item:nth-child(2n) {
+	background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+	background-color: #d3dce6;
+}

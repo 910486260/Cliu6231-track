@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title id="web_title"></title>
+		<link id="web_icon" rel="shortcut icon" type="image/x-icon" />
+		<link rel="stylesheet" href="./element/elementUI.css">
+		<!-- <link rel="stylesheet" href="./css/sweetalert.css"> -->
+		<!-- <script src="./js/sweetalert.js"></script> -->
+		<script src="element/vue.js"></script>
+		<script src="element/element.js"></script>
+		<style>
+			body {
+				background-color: #F2F2F2;
+			}
+
+			#container {
+				color: #000;
+			}
+
+			input {
+				background: #DADADA;
+				outline: none;
+				border: none;
+			}
+
+			input:disabled {
+				background-color: #fff;
+			}
+
+			.nameBox .item .name {
+				font-size: 28px;
+				font-weight: bold;
+			}
+
+			.nameBox .item .input input {
+				height: 40px;
+				width: 100%;
+				font-size: 28px;
+			}
+
+			.nameBox .topic {
+				margin-top: 20px;
+			}
+
+			.nameBox .topic .title {
+				font-size: 22px;
+				font-weight: bold;
+				padding-bottom: 8px;
+			}
+
+			.nameBox .topic .answerBox {
+				display: flex;
+				flex-wrap: wrap;
+			}
+
+			.nameBox .topic .answer {
+				background-color: #DADADA;
+				font-size: 20px;
+				font-weight: bold;
+				padding: 5px 10px;
+				border-radius: 10px;
+				margin-right: 50px;
+				margin-top: 10px;
+			}
+
+			.nameBox .topic .active {
+				background-color: #292C31;
+				color: #fff;
+			}
+
+			.nextBox {
+				text-align: center;
+				margin-top: 50px;
+			}
+
+			.nextBox .nextBtn {
+				font-size: 35px;
+				line-height: 35px;
+				font-weight: bold;
+				color: #fff;
+				background-color: #7756C2;
+				padding: 5px 30px;
+				border-radius: 40px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div class="step1" v-if="step==1">
+				<div class="nameBox">
+					<div class="item">
+						<div class="name">
+							Name
+						</div>
+						<div class="input">
+							<input v-model="name" placeholder="input box" />
+						</div>
+					</div>
+					<div class="topic" v-for="el in answerList">
+						<div class="title">
+							{{el.title}}
+						</div>
+						<div class="answerBox">
+							<div class="answer" :class="an.check?'active':''" v-for="(an,i) in el.children"
+								@click="check(el,i)">{{an.name}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="nextBox">
+					<span class="nextBtn" @click="next()">
+						Next
+					</span>
+				</div>
+			</div>
+			<div class="step2" v-if="step==2">
+				<div class="nameBox">
+					<div class="item">
+						<div class="name">
+							Fitness Preference
+						</div>
+					</div>
+					<div class="topic" v-for="el in answerList2">
+						<div class="title">
+							{{el.title}}
+						</div>
+						<div class="answerBox">
+							<div class="answer" :class="an.check?'active':''" v-for="(an,i) in el.children"
+								@click="check(el,i)">{{an.name}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="nameBox" style="margin-top: 30px;">
+					<div class="item">
+						<div class="name">
+							Start Date
+						</div>
+						<div style="margin-top: 10px;">
+							<el-date-picker v-model="startDate" type="date" placeholder="" format="yyyy-MM-dd"
+								value-format="yyyy-MM-dd" />
+						</div>
+					</div>
+				</div>
+				<div class="nextBox">
+					<span class="nextBtn" @click="finish()">
+						Done
+					</span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var that;
+		var app = new Vue({
+			el: '#container',
+			data() {
+				return {
+					step: 1,
+					name: '',
+					startDate: '',
+					answerList2: [{
+						title: '4.How much exercise do youwant to do every day?',
+						children: [{
+							check: false,
+							name: '20 Mins'
+						}, {
+							check: false,
+							name: '30 Mins'
+						}, {
+							check: false,
+							name: '40 Mins'
+						}, {
+							check: false,
+							name: '60 Mins'
+						}]
+					}, {
+						title: '5.Difficulty Levels',
+						children: [{
+							check: false,
+							name: 'Beginner'
+						}, {
+							check: false,
+							name: 'Intermediate'
+						}, {
+							check: false,
+							name: 'Advanced'
+						}]
+					}],
+					answerList: [{
+						title: '1.What types of exercise would you like to add in addition tobasic training?',
+						children: [{
+							check: false,
+							name: 'Satya Yuga'
+						}, {
+							check: false,
+							name: 'Treta Yuga'
+						}, {
+							check: false,
+							name: 'Dvapara Yuga'
+						}, {
+							check: false,
+							name: 'Kali Yuga'
+						}]
+					}, {
+						title: '2.Category by Goals',
+						children: [{
+							check: false,
+							name: 'Flexibility Training'
+						}, {
+							check: false,
+							name: 'strength Training'
+						}, {
+							check: false,
+							name: 'Relaxation and Meditation'
+						}]
+					}, {
+						title: '3.Goal Setting',
+						children: [{
+							check: false,
+							name: 'Weight Loss'
+						}, {
+							check: false,
+							name: 'Stress Relief'
+						}, {
+							check: false,
+							name: 'Flexibility Enhancement'
+						}, {
+							check: false,
+							name: 'Fitness improvement'
+						}]
+					}]
+				}
+			},
+			created() {
+
+			},
+			mounted() {
+
+			},
+			methods: {
+				toUrl(url) {
+					window.location.href = url
+				},
+				next() {
+					if (!this.name) {
+						this.$message.error('The input field cannot be empty')
+						return;
+					}
+					this.step++;
+				},
+				finish() {
+					if (!this.startDate) {
+						this.$message.error('Please select a date')
+						return
+					}
+					var list = this.answerList.concat(this.answerList2);
+					var param = {
+						id:new Date().getTime(),
+						name: this.name,
+						startDate: this.startDate,
+						answerList: list,
+						profile:Math.floor(Math.random() * 2),
+						num:this.getRandomNumberBetween(),
+						bpmNum:this.getRandomNumberBetween()
+					}
+					var paramList = window.localStorage.getItem('paramList');
+					if(null!=paramList){
+						paramList=JSON.parse(paramList);
+					}else{
+						paramList=[]
+					}
+					paramList.push(param);
+					window.localStorage.setItem("paramList",JSON.stringify(paramList))
+					this.toUrl('index.html')
+				},
+				getRandomNumberBetween() {
+				    return Math.floor(Math.random() * (300 - 50 + 1)) + 50;
+				},
+				check(item, i) {
+					item.children[i].check = !item.children[i].check;
+					item.children.forEach((e, index) => {
+						if (i != index) {
+							e.check = false;
+						}
+					})
+				}
+			}
+		})
+	</script>
+
+</html>
